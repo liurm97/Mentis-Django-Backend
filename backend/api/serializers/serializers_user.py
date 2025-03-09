@@ -43,24 +43,18 @@ class CustomUserSerializer(serializers.Serializer):
         # get all emails
         emails = list(User.objects.values_list("email", flat=True))
 
-        print(f"emails:: {emails}")
-
         # validate email is unique, else raise ValidationError
         if data in emails:
-            print(f"validate_email - fail")
 
             raise serializers.ValidationError("Email must be unique")
 
         else:
-            print(f"validate_email - pass")
-            print(f"data:: {data}")
             return data
 
     def create(self, validated_data):
         """
         If data is valid, create user and insert into Role table
         """
-        print(f"validated_data:: {validated_data}")
         interest_key_exists = False
         role = validated_data.pop("role")
         if "interest" in validated_data:
