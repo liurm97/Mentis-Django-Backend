@@ -23,6 +23,7 @@ from datetime import datetime
 import pytz
 from django.utils import timezone
 from django.db import transaction
+from django.conf import settings
 
 
 class ListCousesByCategoryView(APIView):
@@ -178,9 +179,7 @@ class ListCourseDetailView(APIView):
 
             if feedback_count > 0:
                 for feedback in feedbacks:
-                    feedback_provided_by_student_full_name = f"{
-                        feedback.student.first_name
-                    } {feedback.student.last_name}"
+                    feedback_provided_by_student_full_name = f"{feedback.student.first_name} {feedback.student.last_name}"
                     feedback_provided = feedback.feedback
                     feedback_date_utc = feedback.created_at
                     feedback_date_local = self.convert_to_localtime(feedback_date_utc)
@@ -263,7 +262,7 @@ class ListCourseByUserView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
@@ -355,7 +354,7 @@ class CreateUserCourseView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
         decoded_role = decoded.get("role")
@@ -416,7 +415,7 @@ class UpdateCourseUserBlockStatusView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
@@ -464,7 +463,7 @@ class EnrollUserCourseView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
@@ -505,7 +504,7 @@ class AddCourseReviewView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
@@ -552,7 +551,7 @@ class RemoveStudentFromCourseView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 

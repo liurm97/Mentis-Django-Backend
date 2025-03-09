@@ -10,10 +10,13 @@ Setup global urls
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from api.views.views_user import CreateUserView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from api.views.views_custom_token import MyTokenObtainPairView
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -22,4 +25,4 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
     # path("api-auth/", include("rest_framework.urls")),
     path("api/", include("api.urls")),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

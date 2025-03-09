@@ -172,3 +172,5 @@ media/*
 /*/media/*
 /*/*/media/*
 /*/*/*/media/*
+*/static/*
+*/staticfiles/*

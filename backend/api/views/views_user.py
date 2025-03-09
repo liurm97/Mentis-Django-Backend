@@ -16,6 +16,7 @@ from ..models import Role, Interest, CourseTracker, Course, Status
 from ..serializers.serializers_user import CustomUserSerializer
 from django.db.utils import IntegrityError
 from rest_framework import serializers
+from django.conf import settings
 
 
 class CreateUserView(APIView):
@@ -43,13 +44,13 @@ class CreateUserView(APIView):
 
             else:
                 return Response(
-                    f"The provided email ({request.data["email"]}) is not unique. Please try again.",
+                    f"The provided email ({request.data['email']}) is not unique. Please try again.",
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
         except IntegrityError:
             return Response(
-                f"The provided username ({request.data["username"]}) is not unique. Please try again.",
+                f"The provided username ({request.data['username']}) is not unique. Please try again.",
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -69,7 +70,8 @@ class ListUsersView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        # jwt_secret = os.getenv("SECRET_KEY")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
@@ -91,12 +93,15 @@ class ListUsersView(APIView):
             user_list = []
             for user in users:
                 username, first_name, last_name = user
-                full_name = f"{first_name} {last_name}"
-                role = Role.objects.filter(userRole__username=username)[0].role
-                user_list.append(
-                    {"fullname": full_name, "role": role, "username": username}
-                )
-                sorted_user_list = sorted(user_list, key=lambda x: x["fullname"])
+                print(username)
+                if username != "admin":
+                    full_name = f"{first_name} {last_name}"
+                    role = Role.objects.filter(userRole__username=username)[0].role
+                    user_list.append(
+                        {"fullname": full_name, "role": role, "username": username}
+                    )
+                    sorted_user_list = sorted(user_list, key=lambda x: x["fullname"])
+            print(sorted_user_list)
             return Response(sorted_user_list, status=status.HTTP_200_OK)
 
         except ValidationError as e:

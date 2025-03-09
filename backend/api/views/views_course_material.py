@@ -17,6 +17,7 @@ from ..serializers.serializers_course import (
     RemoveStudentFromCourseSerializer,
     UpdateCourseUserBlockStatusSerializer,
 )
+from django.conf import settings
 
 from django.http import FileResponse, HttpResponse
 from wsgiref.util import FileWrapper
@@ -30,7 +31,6 @@ import pytz
 from django.utils import timezone
 from django.db import transaction
 
-
 class AddCourseMaterialView(APIView):
     """
     Protected route - Add course material to course
@@ -40,7 +40,7 @@ class AddCourseMaterialView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
@@ -105,7 +105,7 @@ class DownloadCourseMaterialAttachmentView(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 

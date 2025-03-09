@@ -19,7 +19,7 @@ import pytz
 from django.utils import timezone
 import jwt
 from django.core.exceptions import ValidationError
-
+from django.conf import settings
 
 class UserStatus(APIView):
 
@@ -28,7 +28,7 @@ class UserStatus(APIView):
 
     def validate_user(self, request_header, username) -> bool:
         access_token = request_header.get("Authorization").split(" ")[-1]
-        jwt_secret = os.getenv("SECRET")
+        jwt_secret = settings.SECRET_KEY
         decoded = jwt.decode(access_token, jwt_secret, algorithms="HS256")
         decoded_username = decoded.get("username")
 
