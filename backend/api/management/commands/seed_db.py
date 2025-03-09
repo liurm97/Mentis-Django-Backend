@@ -1,6 +1,5 @@
 from ...models import (
     Interest,
-    Notification,
     Course,
     CourseTracker,
     CourseMaterial,

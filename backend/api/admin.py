@@ -3,35 +3,60 @@ from .models import *
 from django.contrib.auth.models import User
 
 
-# class UserAdmin(admin.ModelAdmin):
+# class UserAdmin():
 #     """
 #     Define StackedInline page for Student Response
 #     """
 
-#     model = User
-# exclude = ["score"]
+#     # inlines = [MyInlineAdmin]
 
 
-# class StudentAdmin(admin.ModelAdmin):
-#     """
-#     Define admin page for Students
-#     """
-
-#     inlines = [
-#         StudentResponseInline,
-#     ]
-#     ordering = ["age"]
-#     list_display = ["age", "gender"]
+class StatusAdmin(admin.ModelAdmin):
+    """
+    Define admin page for Status
+    """
 
 
-# class ResourceAdmin(admin.ModelAdmin):
-#     """
-#     Define admin page for Resources
-#     """
-
-#     ordering = ["id"]
-#     list_display = ["type", "url"]
+class RoleAdmin(admin.ModelAdmin):
+    """
+    Define admin page for Role
+    """
 
 
-# admin.site.register(User, UserAdmin)
-# admin.site.register(Resource, ResourceAdmin)
+class InterestAdmin(admin.ModelAdmin):
+    """
+    Define admin page for Interest
+    """
+
+
+class CourseAdmin(admin.ModelAdmin):
+    """
+    Define admin page for Course
+    """
+
+
+class CourseTrackerAdmin(admin.ModelAdmin):
+    """
+    Define admin page for CourseTracker
+    """
+
+
+class StudentFeedbackAdmin(admin.ModelAdmin):
+    """
+    Define admin page for StudentFeedback
+    """
+
+
+class CourseMaterialAdmin(admin.ModelAdmin):
+    """
+    Define admin page for CourseMaterial
+    """
+
+
+admin.site.register(Status, StatusAdmin)
+admin.site.register(Role, RoleAdmin)
+admin.site.register(Interest, InterestAdmin)
+admin.site.register(Course, CourseAdmin)
+admin.site.register(CourseTracker, CourseTrackerAdmin)
+admin.site.register(StudentFeedback, StudentFeedbackAdmin)
+admin.site.register(CourseMaterial, CourseMaterialAdmin)
